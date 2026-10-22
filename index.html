@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyAdWatch</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      margin: 0;
+    }
+
+    .card {
+      max-width: 380px;
+      margin: 40px auto;
+      padding: 25px;
+      border-radius: 18px;
+      background: #1d293b;
+    }
+
+    h1 {
+      color: #ffad33;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #d5dbea;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 12px;
+      background: #ffad33;
+      color: #101827;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>EasyAdWatch</h1>
+    <p>Watch advertisements and earn rewards.</p>
+    <p>Welcome! We're preparing the advertising system.</p>
+
+    <button onclick="showStatus()">Watch an Ad</button>
+
+    <p id="status">Advertising is not connected yet.</p>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    function showStatus() {
+      document.getElementById("status").textContent =
+        "Ads are not connected yet. No rewards have been earned.";
+    }
+  </script>
+</body>
+</html>
+```
