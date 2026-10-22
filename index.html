@@ -1,11 +1,14 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EasyAdWatch</title>
+
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://api.adsun.io/sdk.js"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -46,34 +49,81 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     #status {
       margin-top: 20px;
       font-size: 14px;
     }
   </style>
 </head>
+
 <body>
   <div class="card">
     <h1>EasyAdWatch</h1>
     <p>Watch advertisements and earn rewards.</p>
-    <p>Welcome! We're preparing the advertising system.</p>
+    <p>Watch an eligible advertisement to complete a reward attempt.</p>
 
-    <button onclick="showStatus()">Watch an Ad</button>
+    <button id="watchButton" onclick="watchAd()">Watch an Ad</button>
 
-    <p id="status">Advertising is not connected yet.</p>
+    <p id="status">Ready when you are.</p>
   </div>
 
   <script>
     const tg = window.Telegram?.WebApp;
+    const statusText = document.getElementById("status");
+    const watchButton = document.getElementById("watchButton");
 
     if (tg) {
       tg.ready();
       tg.expand();
     }
 
-    function showStatus() {
-      document.getElementById("status").textContent =
-        "Ads are not connected yet. No rewards have been earned.";
+    let adController = null;
+    let isWatching = false;
+
+    function setStatus(message) {
+      statusText.textContent = message;
+    }
+
+    async function watchAd() {
+      if (isWatching) return;
+
+      if (!window.Adsun || typeof window.Adsun.init !== "function") {
+        setStatus("Ad service is not available. Please try again later.");
+        return;
+      }
+
+      isWatching = true;
+      watchButton.disabled = true;
+      setStatus("Loading advertisement...");
+
+      try {
+        if (!adController) {
+          adController = window.Adsun.init({
+            blockId: "50017"
+          });
+        }
+
+        const result = await adController.show();
+
+        setStatus(
+          "Ad completed. Reward confirmation and account credit are not connected yet."
+        );
+
+        console.log("Adsun result:", result);
+      } catch (error) {
+        console.error("Adsun error:", error);
+        setStatus(
+          "No completed ad was confirmed. Please try again later."
+        );
+      } finally {
+        isWatching = false;
+        watchButton.disabled = false;
+      }
     }
   </script>
 </body>
