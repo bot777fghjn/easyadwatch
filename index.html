@@ -4,73 +4,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EasyAdWatch</title>
+  <meta name="theme-color" content="#101827">
+  <title>AdEarn | Earn Rewards</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://api.adsun.io/sdk.js"></script>
 
   <style>
+    :root {
+      color-scheme: dark;
+      --background: #101827;
+      --card: #1d293b;
+      --accent: #ffad33;
+      --text: #ffffff;
+      --muted: #aebbd0;
+      --border: #344258;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #101827;
-      color: white;
-      text-align: center;
-      padding: 30px 20px;
       margin: 0;
+      padding: 24px 16px 40px;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, sans-serif;
     }
 
-    .card {
-      max-width: 380px;
-      margin: 40px auto;
+    .container {
+      width: 100%;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0 28px;
+    }
+
+    .brand {
+      color: var(--accent);
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .badge {
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .balance-card {
       padding: 25px;
-      border-radius: 18px;
-      background: #1d293b;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #293b55, #1d293b);
+      border: 1px solid var(--border);
     }
 
-    h1 {
-      color: #ffad33;
+    .eyebrow {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    p {
+    .balance {
+      margin: 12px 0;
+      color: var(--accent);
+      font-size: 38px;
+      font-weight: 800;
+    }
+
+    .balance-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
       line-height: 1.6;
-      color: #d5dbea;
+    }
+
+    .section-title {
+      margin: 30px 0 14px;
+      font-size: 19px;
+    }
+
+    .ad-card {
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--card);
+    }
+
+    .ad-icon {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      margin-bottom: 15px;
+      border-radius: 16px;
+      background: #3a3023;
+      color: var(--accent);
+      font-size: 25px;
+    }
+
+    .ad-card h2 {
+      margin: 0 0 9px;
+      font-size: 20px;
+    }
+
+    .ad-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
     }
 
     button {
       width: 100%;
       padding: 15px;
-      margin-top: 12px;
-      border: none;
-      border-radius: 12px;
-      background: #ffad33;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--accent);
       color: #101827;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 800;
       cursor: pointer;
     }
 
     button:disabled {
-      opacity: 0.6;
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
-    #status {
-      margin-top: 20px;
+    .status {
+      min-height: 42px;
+      margin: 15px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .info-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card);
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
       font-size: 14px;
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 28px 8px 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>EasyAdWatch</h1>
-    <p>Watch advertisements and earn rewards.</p>
-    <p>Watch an eligible advertisement to complete a reward attempt.</p>
+  <main class="container">
+    <header>
+      <div class="brand">AdEarn</div>
+      <div class="badge">REWARDS</div>
+    </header>
 
-    <button id="watchButton" onclick="watchAd()">Watch an Ad</button>
+    <section class="balance-card">
+      <p class="eyebrow">Your coin balance</p>
+      <div class="balance" id="balance">— coins</div>
+      <p class="balance-note">
+        Your verified account balance will appear here once account
+        authentication and the balance API are connected.
+      </p>
+    </section>
 
-    <p id="status">Ready when you are.</p>
-  </div>
+    <h2 class="section-title">Earn rewards</h2>
+
+    <section class="ad-card">
+      <div class="ad-icon" aria-hidden="true">▶</div>
+      <h2>Watch an advertisement</h2>
+      <p>
+        Watch an eligible advertisement to start a reward attempt.
+        Coins will only be credited after the advertising provider
+        verifies completion through the backend.
+      </p>
+
+      <button id="watchButton" type="button">Watch an Ad</button>
+
+      <p class="status" id="status" role="status" aria-live="polite">
+        Checking advertising service...
+      </p>
+    </section>
+
+    <h2 class="section-title">How rewards work</h2>
+
+    <section class="info-card">
+      <p>
+        1. Start an eligible advertisement.<br>
+        2. Complete the required viewing.<br>
+        3. Wait for server-side verification.<br>
+        4. Your verified reward will appear in your account.
+      </p>
+    </section>
+
+    <footer>
+      AdEarn · Rewards are subject to advertising-provider rules.
+      Unverified ad completions do not earn coins.
+    </footer>
+  </main>
 
   <script>
     const tg = window.Telegram?.WebApp;
@@ -89,11 +241,28 @@
       statusText.textContent = message;
     }
 
+    function initializeAdService() {
+      if (!window.Adsun ||
+          typeof window.Adsun.init !== "function") {
+        setStatus(
+          "Advertising service is not available yet. Please try again later."
+        );
+        return;
+      }
+
+      setStatus(
+        "Advertising service detected. Reward verification is not connected yet."
+      );
+    }
+
     async function watchAd() {
       if (isWatching) return;
 
-      if (!window.Adsun || typeof window.Adsun.init !== "function") {
-        setStatus("Ad service is not available. Please try again later.");
+      if (!window.Adsun ||
+          typeof window.Adsun.init !== "function") {
+        setStatus(
+          "Ad service is unavailable. Please try again later."
+        );
         return;
       }
 
@@ -108,23 +277,24 @@
           });
         }
 
-        const result = await adController.show();
+        await adController.show();
 
         setStatus(
-          "Ad completed. Reward confirmation and account credit are not connected yet."
+          "Ad attempt finished. No coins were credited because server-side reward verification is not connected yet."
         );
-
-        console.log("Adsun result:", result);
       } catch (error) {
         console.error("Adsun error:", error);
         setStatus(
-          "No completed ad was confirmed. Please try again later."
+          "No verified reward was received. Please try again later."
         );
       } finally {
         isWatching = false;
         watchButton.disabled = false;
       }
     }
+
+    watchButton.addEventListener("click", watchAd);
+    initializeAdService();
   </script>
 </body>
 </html>
